@@ -52,7 +52,11 @@ export type PanelRefProps = {
 
 export type NullableDateType<DateType> = DateType | null | undefined;
 
-export type OnSelect<DateType> = (value: DateType, type: 'key' | 'mouse' | 'submit') => void;
+export type OnSelect<DateType> = (
+  value: DateType,
+  type: 'key' | 'mouse' | 'submit',
+  index?: any,
+) => void;
 
 export type PanelSharedProps<DateType> = {
   prefixCls: string;

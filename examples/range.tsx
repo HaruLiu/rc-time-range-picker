@@ -1,5 +1,6 @@
 import React from 'react';
-import moment, { Moment } from 'moment';
+import type { Moment } from 'moment';
+import moment from 'moment';
 import RangePicker from '../src/RangePicker';
 import momentGenerateConfig from '../src/generate/moment';
 import zhCN from '../src/locale/zh_CN';
@@ -40,10 +41,17 @@ export default () => {
 
   const rangePickerRef = React.useRef<RangePicker<Moment>>(null);
 
-  const [timeValue, setTimeValue] = React.useState<any>([moment('12:00:11', 'HH:mm:ss'), moment('18:00:11', 'HH:mm:ss')])
-  const onTimeChange = (newValue: [Moment | null, Moment | null] | null, formatStrings?: string[]) => {
+  const [timeValue, setTimeValue] = React.useState<any>([
+    moment('12:00:11', 'HH:mm:ss'),
+    moment('18:00:11', 'HH:mm:ss'),
+  ]);
+  const onTimeChange = (
+    newValue: [Moment | null, Moment | null] | null,
+    formatStrings?: string[],
+  ) => {
+    console.log('Change:', newValue, formatStrings);
     setTimeValue(newValue);
-  }
+  };
   return (
     <div>
       <h2>Value: {value ? `${formatDate(value[0])} ~ ${formatDate(value[1])}` : 'null'}</h2>
@@ -71,7 +79,7 @@ export default () => {
             ranges={{
               ranges: [moment(), moment().add(10, 'day')],
             }}
-            onOk={dates => {
+            onOk={(dates) => {
               console.log('OK!!!', dates);
             }}
           />

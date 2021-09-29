@@ -101,7 +101,6 @@ export type PickerPanelDateProps<DateType> = {
 
 export type PickerPanelTimeProps<DateType> = {
   picker: 'time';
-  setMergedActivePickerIndex?: any;
   onPanelClick?: (index: number) => void;
 } & PickerPanelSharedProps<DateType> &
   SharedTimeProps<DateType>;
@@ -152,7 +151,6 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     secondStep = 1,
     onPanelClick,
   } = props as MergedPickerPanelProps<DateType>;
-
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
 
   const isHourStepValid = 24 % hourStep === 0;
@@ -286,8 +284,8 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       }
 
       if (onContextSelect) {
-        onContextSelect(date, type);
-        onPanelClick?.(panelPosition === 'right' ? 1 : 0)
+        onContextSelect(date, type, panelPosition === 'right' ? 1 : 0);
+        onPanelClick?.(panelPosition === 'right' ? 1 : 0);
       }
 
       if (onChange && !isEqual(generateConfig, date, mergedValue) && !disabledDate?.(date)) {
@@ -440,7 +438,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
           {...pickerProps}
           {...(typeof showTime === 'object' ? showTime : null)}
           onSelect={(date, type) => {
-            setViewDate(date);
+            // setViewDate(date);
             triggerSelect(date, type);
           }}
         />

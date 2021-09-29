@@ -258,7 +258,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     value,
     defaultValue,
     postState: (values) => {
-       return picker === 'time' && !order ? values : reorderValues(values, generateConfig);
+      return picker === 'time' && !order ? values : reorderValues(values, generateConfig);
     },
   });
 
@@ -417,9 +417,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         }
 
         // Clean up cache since invalidate
-        openRecordsRef.current = {
-          [sourceIndex]: true,
-        };
+        // openRecordsRef.current = {
+        //   [sourceIndex]: true,
+        // };
       } else if (picker !== 'time' || order !== false) {
         // Reorder when in same date
         values = reorderValues(values, generateConfig);
@@ -442,6 +442,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
       onCalendarChange(values, [startStr, endStr], info);
     }
+
+    console.log(startStr, endStr);
 
     // >>>>> Trigger `onChange` event
     const canStartValueTrigger = canValueTrigger(startValue, 0, mergedDisabled, allowEmpty);
@@ -479,7 +481,13 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       getValue(values, sourceIndex)
     ) {
       // Delay to focus to avoid input blur trigger expired selectedValues
-      triggerOpenAndFocus(nextOpenIndex);
+      if (picker === 'time') {
+        triggerOpen(false, sourceIndex);
+        startInputRef.current.blur();
+        endInputRef.current.blur();
+      } else {
+        triggerOpenAndFocus(nextOpenIndex);
+      }
     } else {
       triggerOpen(false, sourceIndex);
     }
@@ -791,6 +799,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           range: mergedActivePickerIndex ? 'end' : 'start',
         });
     }
+
     const onPanelClick = (index) => {
       if (index === 1) {
         endInputRef.current.focus();
@@ -800,7 +809,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         endInputRef.current.blur();
       }
       setMergedActivePickerIndex(index);
-    }
+    };
 
     return (
       <RangeContext.Provider
@@ -899,7 +908,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       needConfirmButton,
       okDisabled:
         !getValue(selectedValue, mergedActivePickerIndex) ||
-        (disabledDate && disabledDate(selectedValue[mergedActivePickerIndex])),
+        (disabledDate && disabledDate(selectedValue[mergedActivePickerIndex])) ||
+        (picker === 'time' && !(getValue(selectedValue, 0) && getValue(selectedValue, 1))),
       locale,
       rangeList,
       onOk: () => {
@@ -914,42 +924,42 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     });
 
     // if (picker !== 'time' && !showTime) {
-      const viewDate = getViewDate(mergedActivePickerIndex);
-      const nextViewDate = getClosingViewDate(viewDate, picker, generateConfig);
-      const currentMode = mergedModes[mergedActivePickerIndex];
+    const viewDate = getViewDate(mergedActivePickerIndex);
+    const nextViewDate = getClosingViewDate(viewDate, picker, generateConfig);
+    const currentMode = mergedModes[mergedActivePickerIndex];
 
-      const showDoublePanel = currentMode === picker;
-      const leftPanel = renderPanel(showDoublePanel ? 'left' : false, {
-        pickerValue: viewDate,
-        onPickerValueChange: (newViewDate) => {
-          setViewDate(newViewDate, mergedActivePickerIndex);
-        },
-      });
-      const rightPanel = renderPanel('right', {
-        pickerValue: nextViewDate,
-        onPickerValueChange: (newViewDate) => {
-          setViewDate(
-            getClosingViewDate(newViewDate, picker, generateConfig, -1),
-            mergedActivePickerIndex,
-          );
-        },
-      });
+    const showDoublePanel = currentMode === picker;
+    const leftPanel = renderPanel(showDoublePanel ? 'left' : false, {
+      pickerValue: viewDate,
+      onPickerValueChange: (newViewDate) => {
+        setViewDate(newViewDate, mergedActivePickerIndex);
+      },
+    });
+    const rightPanel = renderPanel('right', {
+      pickerValue: nextViewDate,
+      onPickerValueChange: (newViewDate) => {
+        setViewDate(
+          getClosingViewDate(newViewDate, picker, generateConfig, -1),
+          mergedActivePickerIndex,
+        );
+      },
+    });
 
-      if (direction === 'rtl') {
-        panels = (
-          <>
-            {rightPanel}
-            {showDoublePanel && leftPanel}
-          </>
-        );
-      } else {
-        panels = (
-          <>
-            {leftPanel}
-            {showDoublePanel && rightPanel}
-          </>
-        );
-      }
+    if (direction === 'rtl') {
+      panels = (
+        <>
+          {rightPanel}
+          {showDoublePanel && leftPanel}
+        </>
+      );
+    } else {
+      panels = (
+        <>
+          {leftPanel}
+          {showDoublePanel && rightPanel}
+        </>
+      );
+    }
     // } else {
     //   panels = renderPanel();
     // }
@@ -1052,9 +1062,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const activeBarPositionStyle =
     direction === 'rtl' ? { right: activeBarLeft } : { left: activeBarLeft };
   // ============================ Return =============================
-  const onContextSelect = (date: DateType, type: 'key' | 'mouse' | 'submit') => {
-    const values = updateValues(selectedValue, date, mergedActivePickerIndex);
-
+  const onContextSelect = (date: DateType, type: 'key' | 'mouse' | 'submit', index?: any) => {
+    const values = updateValues(
+      selectedValue,
+      date,
+      picker === 'time' ? index : mergedActivePickerIndex,
+    );
     if (type === 'submit' || (type !== 'key' && !needConfirmButton)) {
       // triggerChange will also update selected values
       triggerChange(values, mergedActivePickerIndex);

@@ -32,9 +32,12 @@ function TimeUnitColumn(props: TimeUnitColumnProps) {
 
   // `useLayoutEffect` here to avoid blink by duration is 0
   useLayoutEffect(() => {
-    const li = liRefs.current.get(value!);
-    if (li && open !== false && ['left', 'right'][currentPositionIndex] === panelPosition) {
-      scrollTo(ulRef.current!, li.offsetTop, 120);
+    console.log(value);
+    if (value !== -1) {
+      const li = liRefs.current.get(value!);
+      if (li && open !== false && ['left', 'right'][currentPositionIndex] === panelPosition) {
+        scrollTo(ulRef.current!, li.offsetTop, 120);
+      }
     }
   }, [value]);
 
