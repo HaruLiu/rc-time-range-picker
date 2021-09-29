@@ -29,7 +29,6 @@ export default function getRanges({
 
   if (rangeList.length) {
     const Item = (components.rangeItem || 'span') as any;
-
     presetNode = (
       <>
         {rangeList.map(({ label, onClick, onMouseEnter, onMouseLeave }) => (

@@ -24,7 +24,7 @@ function TimeUnitColumn(props: TimeUnitColumnProps) {
   const { prefixCls, units, onSelect, value, active, hideDisabledOptions } = props;
   const cellPrefixCls = `${prefixCls}-cell`;
   const { open } = React.useContext(PanelContext);
-  const { panelPosition, currentPositionIndex } = React.useContext(RangeContext);
+  const { panelPosition, currentPositionIndex, defaultFormatValue } = React.useContext(RangeContext);
 
   const ulRef = useRef<HTMLUListElement>(null);
   const liRefs = useRef<Map<number, HTMLElement | null>>(new Map());
@@ -32,7 +32,6 @@ function TimeUnitColumn(props: TimeUnitColumnProps) {
 
   // `useLayoutEffect` here to avoid blink by duration is 0
   useLayoutEffect(() => {
-    console.log(value);
     if (value !== -1) {
       const li = liRefs.current.get(value!);
       if (li && open !== false && ['left', 'right'][currentPositionIndex] === panelPosition) {
@@ -43,7 +42,33 @@ function TimeUnitColumn(props: TimeUnitColumnProps) {
 
   useLayoutEffect(() => {
     if (open) {
-      const li = liRefs.current.get(value!);
+      // const startValue = defaultFormatValue[0].split(':');
+      // const endValue = defaultFormatValue[1].split(':');
+      // // console.log(startValue, endValue)
+      // const values = [...startValue, ...endValue];
+      // console.log(values);
+      // values.map(item => {
+      //   // console.log(item)
+      //   const li = liRefs.current.get(Number(item)!);
+      //   // console.log(li);
+      //   if (li) {
+      //     scrollRef.current = waitElementReady(li, () => {
+      //       scrollTo(ulRef.current!, li.offsetTop, 0);
+      //     });
+      //   }
+      // })
+      // let li;
+      // for (let i = 0; i < values.length; i++) {
+      //   li = liRefs.current.get(Number(values[i])!);
+      //   console.log(li);
+      //   if (li) {
+      //     scrollRef.current = waitElementReady(li, () => {
+      //       scrollTo(ulRef.current!, li.offsetTop, 0);
+      //     });
+      //   }
+      // }
+      // console.log(li);
+      let li = liRefs.current.get(value!);
       if (li) {
         scrollRef.current = waitElementReady(li, () => {
           scrollTo(ulRef.current!, li.offsetTop, 0);

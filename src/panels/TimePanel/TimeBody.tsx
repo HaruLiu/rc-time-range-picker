@@ -7,6 +7,8 @@ import TimeUnitColumn from './TimeUnitColumn';
 import { leftPad } from '../../utils/miscUtil';
 import type { SharedTimeProps } from '.';
 import { setTime as utilSetTime } from '../../utils/timeUtil';
+import RangeContext from '../../RangeContext';
+import {useContext} from "react";
 
 function shouldUnitsUpdate(prevUnits: Unit[], nextUnits: Unit[]) {
   if (prevUnits.length !== nextUnits.length) return true;
@@ -68,7 +70,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     hideDisabledOptions,
     onSelect,
   } = props;
-
+  const { formatList } = React.useContext(RangeContext);
   const columns: {
     node: React.ReactElement;
     value: number;
@@ -234,8 +236,12 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
       onSelect(setTime(!!num, hour, minute, second), 'mouse');
     },
   );
-
-  return <div className={contentPrefixCls}>{columns.map(({ node }) => node)}</div>;
+  // 根据format的值，当略去 format 中的某部分时，浮层中对应的列也会消失。
+  const columnsItem = () => {
+    const formatLength = formatList && formatList.join(':').split(':').length;
+    return formatList ? columns.splice(0, formatLength) : columns;
+  }
+  return <div className={contentPrefixCls}>{columnsItem().map(({ node }) => node)}</div>;
 }
 
 export default TimeBody;

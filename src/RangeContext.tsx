@@ -11,6 +11,8 @@ export type RangeContextProps = {
   inRange?: boolean;
   panelPosition?: 'left' | 'right' | false;
   currentPositionIndex?: any;
+  defaultFormatValue?: any;
+  formatList?: any;
 };
 
 const RangeContext = React.createContext<RangeContextProps>({});

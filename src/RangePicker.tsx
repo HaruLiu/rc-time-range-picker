@@ -289,6 +289,23 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       return postValues;
     },
   });
+  // 获取默认值在面板滚动时使用
+  const [defaultFormatValue, setDefaultFormatValue] = React.useState<any>([])
+  useEffect(() => {
+    if (selectedValue) {
+      const startStr =
+          selectedValue[0]
+              ? formatValue(selectedValue[0], { generateConfig, locale, format: formatList[0] })
+              : '00:00:00';
+      const endStr =
+          selectedValue[1]
+              ? formatValue(selectedValue[1], { generateConfig, locale, format: formatList[0] })
+              : '00:00:00';
+      setDefaultFormatValue([startStr, endStr]);
+    } else {
+      setDefaultFormatValue(['00:00:00', '00:00:00'])
+    }
+  }, [selectedValue])
 
   // ============================= Modes =============================
   const [mergedModes, setInnerModes] = useMergedState<[PanelMode, PanelMode]>([picker, picker], {
@@ -443,7 +460,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       onCalendarChange(values, [startStr, endStr], info);
     }
 
-    console.log(startStr, endStr);
 
     // >>>>> Trigger `onChange` event
     const canStartValueTrigger = canValueTrigger(startValue, 0, mergedDisabled, allowEmpty);
@@ -819,6 +835,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           currentPositionIndex: mergedActivePickerIndex,
           rangedValue: rangeHoverValue || selectedValue,
           hoverRangedValue: panelHoverRangedValue,
+          defaultFormatValue,
+          formatList
         }}
       >
         <PickerPanel<DateType>
@@ -966,6 +984,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
     let mergedNodes: React.ReactNode = (
       <>
+        {picker === 'time' && (
+            <div className={`${prefixCls}-header`}>
+              <span className={`${prefixCls}-header-inner`}>开始时间</span>
+              <span className={`${prefixCls}-header-inner`}>结束时间</span>
+            </div>
+        )}
         <div className={`${prefixCls}-panels`}>{panels}</div>
         {(extraNode || rangesNode) && (
           <div className={`${prefixCls}-footer`}>
