@@ -52,6 +52,9 @@ export default () => {
     console.log('Change:', newValue, formatStrings);
     setTimeValue(newValue);
   };
+  const changeTime = () => {
+    setTimeValue([moment('13:00:00', 'HH:mm:ss'), moment('23:59:33', 'HH:mm:ss')]);
+  }
   const disabledHours = ()=>{
     let hours=[];
     let time = new Date(+new Date() +8*3600*1000).toISOString().split("T")[1].split(".")[0];
@@ -94,30 +97,30 @@ export default () => {
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <div style={{ margin: '0 8px' }}>
           <h3>Basic</h3>
-          {/*<RangePicker<Moment>*/}
-          {/*  {...sharedProps}*/}
-          {/*  value={undefined}*/}
-          {/*  locale={zhCN}*/}
-          {/*  allowClear*/}
-          {/*  ref={rangePickerRef}*/}
-          {/*  defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}*/}
-          {/*  clearIcon={<span>X</span>}*/}
-          {/*  suffixIcon={<span>O</span>}*/}
-          {/*/>*/}
-          {/*<RangePicker<Moment>*/}
-          {/*  {...sharedProps}*/}
-          {/*  locale={zhCN}*/}
-          {/*  allowClear*/}
-          {/*  ref={rangePickerRef}*/}
-          {/*  showTime*/}
-          {/*  style={{ width: 700 }}*/}
-          {/*  ranges={{*/}
-          {/*    ranges: [moment(), moment().add(10, 'day')],*/}
-          {/*  }}*/}
-          {/*  onOk={(dates) => {*/}
-          {/*    console.log('OK!!!', dates);*/}
-          {/*  }}*/}
-          {/*/>*/}
+          <RangePicker<Moment>
+            {...sharedProps}
+            value={undefined}
+            locale={zhCN}
+            allowClear
+            ref={rangePickerRef}
+            defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
+            clearIcon={<span>X</span>}
+            suffixIcon={<span>O</span>}
+          />
+          <RangePicker<Moment>
+            {...sharedProps}
+            locale={zhCN}
+            allowClear
+            ref={rangePickerRef}
+            showTime
+            style={{ width: 700 }}
+            ranges={{
+              ranges: [moment(), moment().add(10, 'day')],
+            }}
+            onOk={(dates) => {
+              console.log('OK!!!', dates);
+            }}
+          />
           <RangePicker<Moment>
             {...sharedProps}
             value={timeValue}
@@ -136,86 +139,87 @@ export default () => {
             onChange={onTimeChange}
           />
         </div>
+        <button onClick={changeTime}>修改</button>
 
-        {/*<div style={{ margin: '0 8px' }}>*/}
-        {/*  <h3>Focus</h3>*/}
-        {/*  <RangePicker<Moment>*/}
-        {/*    {...sharedProps}*/}
-        {/*    locale={zhCN}*/}
-        {/*    allowClear*/}
-        {/*    ref={rangePickerRef}*/}
-        {/*    // style={{ width: 500 }}*/}
-        {/*  />*/}
-        {/*  <button*/}
-        {/*    type="button"*/}
-        {/*    onClick={() => {*/}
-        {/*      rangePickerRef.current!.focus();*/}
-        {/*    }}*/}
-        {/*  >*/}
-        {/*    Focus!*/}
-        {/*  </button>*/}
-        {/*</div>*/}
+        <div style={{ margin: '0 8px' }}>
+          <h3>Focus</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            locale={zhCN}
+            allowClear
+            ref={rangePickerRef}
+            // style={{ width: 500 }}
+          />
+          <button
+            type="button"
+            onClick={() => {
+              rangePickerRef.current!.focus();
+            }}
+          >
+            Focus!
+          </button>
+        </div>
 
-        {/*<div style={{ margin: '0 8px' }}>*/}
-        {/*  <h3>Year</h3>*/}
-        {/*  <RangePicker<Moment> {...sharedProps} locale={zhCN} picker="year" />*/}
-        {/*</div>*/}
+        <div style={{ margin: '0 8px' }}>
+          <h3>Year</h3>
+          <RangePicker<Moment> {...sharedProps} locale={zhCN} picker="year" />
+        </div>
 
-        {/*<div style={{ margin: '0 8px' }}>*/}
-        {/*  <h3>Quarter</h3>*/}
-        {/*  <RangePicker<Moment> {...sharedProps} locale={zhCN} picker="quarter" />*/}
-        {/*</div>*/}
+        <div style={{ margin: '0 8px' }}>
+          <h3>Quarter</h3>
+          <RangePicker<Moment> {...sharedProps} locale={zhCN} picker="quarter" />
+        </div>
 
-        {/*<div style={{ margin: '0 8px' }}>*/}
-        {/*  <h3>Month</h3>*/}
-        {/*  <RangePicker<Moment> {...sharedProps} locale={zhCN} picker="month" />*/}
-        {/*</div>*/}
+        <div style={{ margin: '0 8px' }}>
+          <h3>Month</h3>
+          <RangePicker<Moment> {...sharedProps} locale={zhCN} picker="month" />
+        </div>
 
-        {/*<div style={{ margin: '0 8px' }}>*/}
-        {/*  <h3>Week</h3>*/}
-        {/*  <RangePicker<Moment> {...sharedProps} locale={zhCN} picker="week" />*/}
-        {/*</div>*/}
+        <div style={{ margin: '0 8px' }}>
+          <h3>Week</h3>
+          <RangePicker<Moment> {...sharedProps} locale={zhCN} picker="week" />
+        </div>
 
-        {/*<div style={{ margin: '0 8px' }}>*/}
-        {/*  <h3>Allow Empty</h3>*/}
-        {/*  <RangePicker<Moment>*/}
-        {/*    {...sharedProps}*/}
-        {/*    locale={zhCN}*/}
-        {/*    allowClear*/}
-        {/*    allowEmpty={[true, true]}*/}
-        {/*  />*/}
-        {/*</div>*/}
+        <div style={{ margin: '0 8px' }}>
+          <h3>Allow Empty</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            locale={zhCN}
+            allowClear
+            allowEmpty={[true, true]}
+          />
+        </div>
 
-        {/*<div style={{ margin: '0 8px' }}>*/}
-        {/*  <h3>Start disabled</h3>*/}
-        {/*  <RangePicker<Moment> {...sharedProps} locale={zhCN} allowClear disabled={[true, false]} />*/}
-        {/*</div>*/}
-        {/*<div style={{ margin: '0 8px' }}>*/}
-        {/*  <h3>End disabled</h3>*/}
-        {/*  <RangePicker<Moment> {...sharedProps} locale={zhCN} allowClear disabled={[false, true]} />*/}
-        {/*</div>*/}
+        <div style={{ margin: '0 8px' }}>
+          <h3>Start disabled</h3>
+          <RangePicker<Moment> {...sharedProps} locale={zhCN} allowClear disabled={[true, false]} />
+        </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>End disabled</h3>
+          <RangePicker<Moment> {...sharedProps} locale={zhCN} allowClear disabled={[false, true]} />
+        </div>
 
-        {/*<div style={{ margin: '0 8px' }}>*/}
-        {/*  <h3>Uncontrolled</h3>*/}
-        {/*  <RangePicker<Moment>*/}
-        {/*    {...sharedProps}*/}
-        {/*    value={undefined}*/}
-        {/*    locale={zhCN}*/}
-        {/*    placeholder={['start...', 'end...']}*/}
-        {/*    disabled={[false, true]}*/}
-        {/*    allowEmpty={[false, true]}*/}
-        {/*    renderExtraFooter={() => <div>extra footer</div>}*/}
-        {/*  />*/}
-        {/*</div>*/}
-        {/*<div style={{ margin: '0 8px' }}>*/}
-        {/*  <h3>Uncontrolled2</h3>*/}
-        {/*  <RangePicker<Moment>*/}
-        {/*    {...sharedProps}*/}
-        {/*    value={undefined}*/}
-        {/*    locale={zhCN}*/}
-        {/*    placeholder={['start...', 'end...']}*/}
-        {/*  />*/}
-        {/*</div>*/}
+        <div style={{ margin: '0 8px' }}>
+          <h3>Uncontrolled</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            value={undefined}
+            locale={zhCN}
+            placeholder={['start...', 'end...']}
+            disabled={[false, true]}
+            allowEmpty={[false, true]}
+            renderExtraFooter={() => <div>extra footer</div>}
+          />
+        </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Uncontrolled2</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            value={undefined}
+            locale={zhCN}
+            placeholder={['start...', 'end...']}
+          />
+        </div>
       </div>
     </div>
   );

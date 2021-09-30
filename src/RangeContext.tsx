@@ -10,8 +10,7 @@ export type RangeContextProps = {
   hoverRangedValue?: RangeValue<any>;
   inRange?: boolean;
   panelPosition?: 'left' | 'right' | false;
-  currentPositionIndex?: any;
-  defaultFormatValue?: any;
+  currentPositionIndex?: number;
   formatList?: any;
 };
 

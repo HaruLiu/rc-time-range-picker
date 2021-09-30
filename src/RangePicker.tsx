@@ -289,23 +289,23 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       return postValues;
     },
   });
-  // 获取默认值在面板滚动时使用
-  const [defaultFormatValue, setDefaultFormatValue] = React.useState<any>([])
-  useEffect(() => {
-    if (selectedValue) {
-      const startStr =
-          selectedValue[0]
-              ? formatValue(selectedValue[0], { generateConfig, locale, format: formatList[0] })
-              : '00:00:00';
-      const endStr =
-          selectedValue[1]
-              ? formatValue(selectedValue[1], { generateConfig, locale, format: formatList[0] })
-              : '00:00:00';
-      setDefaultFormatValue([startStr, endStr]);
-    } else {
-      setDefaultFormatValue(['00:00:00', '00:00:00'])
-    }
-  }, [selectedValue])
+  // // 获取默认值在面板滚动时使用
+  // const [defaultFormatValue, setDefaultFormatValue] = React.useState<any>([])
+  // useEffect(() => {
+  //   if (selectedValue) {
+  //     const startStr =
+  //         selectedValue[0]
+  //             ? formatValue(selectedValue[0], { generateConfig, locale, format: formatList[0] })
+  //             : '00:00:00';
+  //     const endStr =
+  //         selectedValue[1]
+  //             ? formatValue(selectedValue[1], { generateConfig, locale, format: formatList[0] })
+  //             : '00:00:00';
+  //     setDefaultFormatValue([startStr, endStr]);
+  //   } else {
+  //     setDefaultFormatValue(['00:00:00', '00:00:00'])
+  //   }
+  // }, [selectedValue])
 
   // ============================= Modes =============================
   const [mergedModes, setInnerModes] = useMergedState<[PanelMode, PanelMode]>([picker, picker], {
@@ -835,7 +835,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           currentPositionIndex: mergedActivePickerIndex,
           rangedValue: rangeHoverValue || selectedValue,
           hoverRangedValue: panelHoverRangedValue,
-          defaultFormatValue,
           formatList
         }}
       >
@@ -859,7 +858,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             [`${prefixCls}-panel-focused`]:
               mergedActivePickerIndex === 0 ? !startTyping : !endTyping,
           })}
-          value={getValue(selectedValue, mergedActivePickerIndex)}
+          value={picker === 'time' ? getValue(selectedValue, panelPosition === 'right' ? 1 : 0) :getValue(selectedValue, mergedActivePickerIndex)}
           locale={locale}
           tabIndex={-1}
           onPanelChange={(date, newMode) => {
